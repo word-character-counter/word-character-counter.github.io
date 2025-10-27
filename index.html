@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="uk" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Word & Character Counter — Лічильник слів і символів</title>
+  <meta name="description" content="Миттєвий підрахунок слів і символів. Показує рядки, речення, абзаци, байти, час читання/озвучення. Працює офлайн у вашому браузері." />
+  <meta name="keywords" content="лічильник слів,лічильник символів,word counter,character counter,text analyzer" />
+  <meta property="og:title" content="Word & Character Counter — Live Text Analyzer" />
+  <meta property="og:description" content="Paste or type to get live counts: words, characters, lines, sentences, paragraphs, bytes, reading time." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://your-domain.github.io/" />
+  <meta property="og:image" content="/og-image.png" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%23ffffff'/%3E%3Cstop offset='.9' stop-color='%23cfd7ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='6' y='6' width='52' height='52' rx='14' fill='url(%23g)'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-size='26' fill='%23101a2e' font-family='Arial'%3EWC%3C/text%3E%3C/svg%3E" />
+  <link id="pwa-manifest" rel="manifest" href="#" />
+  <style>
+    /* ===== THEME (default: light) ===== */
+    :root{
+      /* Light */
+      --bg:#f6f8ff; --card:#ffffff; --muted:#6b7390; --text:#0f1425; --brand:#5a48ff; --accent:#0aa07a; --ring:0 0 0 3px rgba(90,72,255,.18);
+      --border: rgba(16,20,37,.08);
+      --stat:#f2f5ff; --stat-border: rgba(16,20,37,.10);
+      --field:#fbfcff; --field-border: rgba(16,20,37,.12);
+      --ad-bg: rgba(16,20,37,.04); --ad-dash: rgba(16,20,37,.12);
+    }
+    [data-theme="dark"]{
+      --bg:#0f0f14; --card:#151826; --muted:#9aa2c0; --text:#f2f4ff; --brand:#a386ff; --accent:#3ee6c4; --ring:0 0 0 3px rgba(62,230,196,.25);
+      --border: rgba(255,255,255,.08);
+      --stat:#121735; --stat-border: rgba(255,255,255,.10);
+      --field:#0f1427; --field-border: rgba(255,255,255,.12);
+      --ad-bg: rgba(255,255,255,.04); --ad-dash: rgba(255,255,255,.1);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif; color:var(--text);
+      background:
+        radial-gradient(900px 600px at 110% -10%, rgba(163,134,255,.18), transparent 55%),
+        radial-gradient(900px 600px at -10% 110%, rgba(62,230,196,.12), transparent 55%),
+        var(--bg);
+    }
+    [data-theme="dark"] body{ background:
+        radial-gradient(900px 600px at 110% -10%, rgba(163,134,255,.18), transparent 55%),
+        radial-gradient(900px 600px at -10% 110%, rgba(62,230,196,.18), transparent 55%),
+        linear-gradient(180deg,#0c0c12,#121425 35%, #0f111f);
+    }
+
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1100px; margin-inline:auto; padding:24px}
+    header{display:flex; gap:16px; align-items:center; justify-content:space-between}
+    .logo{display:flex; align-items:center; gap:12px}
+    .logo-badge{width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg,var(--brand),#c3bbff); display:grid; place-items:center; color:#fff; font-weight:800; box-shadow:0 6px 14px rgba(90,72,255,.25)}
+    .title{line-height:1.1; margin:0}
+    .subtitle{margin:4px 0 0; color:var(--muted); font-size:.95rem}
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.65)); border:1px solid var(--border); box-shadow:0 10px 30px rgba(0,0,0,.06); backdrop-filter: blur(6px); border-radius:20px; padding:18px}
+    [data-theme="dark"] .card{ background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); box-shadow:0 10px 30px rgba(0,0,0,.35); }
+    .grid{display:grid; gap:16px}
+    @media (min-width: 950px){ .grid{grid-template-columns: 1.15fr .85fr} }
+
+    textarea{width:100%; min-height:260px; resize:vertical; padding:14px 16px; border-radius:16px; border:1px solid var(--field-border); background:var(--field); color:var(--text); font-size:1rem; line-height:1.6}
+    textarea:focus{outline:none; box-shadow:var(--ring)}
+
+    .toolbar{display:flex; gap:8px; flex-wrap:wrap}
+    .btn{appearance:none; border:none; border-radius:14px; padding:10px 14px; background:linear-gradient(180deg, var(--brand), #7a5cff); color:#fff; font-weight:800; cursor:pointer}
+    .btn.secondary{background:linear-gradient(180deg,#e9ecff,#d8defc); color:#1b2140; border:1px solid var(--border)}
+    [data-theme="dark"] .btn.secondary{background:linear-gradient(180deg,#2b3348,#1b2236); color:#e6edff; border:1px solid rgba(255,255,255,.12)}
+    .btn.ghost{background:transparent; border:1px solid var(--border); color:var(--text)}
+    .btn:active{transform:translateY(1px)}
+
+    .stats{display:grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap:10px; margin-top:12px}
+    @media (min-width: 520px){ .stats{grid-template-columns: repeat(3,minmax(0,1fr));} }
+    @media (min-width: 950px){ .stats{grid-template-columns: repeat(2,minmax(0,1fr));} }
+    .stat{display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--stat); border:1px solid var(--stat-border); border-radius:14px; padding:10px 12px}
+    .stat .label{color:var(--muted); font-size:.9rem}
+    .stat .value{font-weight:800; letter-spacing:.2px}
+
+    .ad-slot{display:grid; place-items:center; background:var(--ad-bg); border:1px dashed var(--ad-dash); border-radius:12px; padding:10px; color:var(--muted); font-size:.9rem}
+
+    .panel{display:grid; gap:12px}
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background:var(--field); border:1px solid var(--field-border); border-radius:8px; padding:2px 6px; font-size:.85rem}
+    .muted{color:var(--muted)}
+    footer{margin-top:28px; color:var(--muted); font-size:.9rem}
+
+    .switch{display:inline-flex; gap:8px; align-items:center}
+    .switch input{accent-color:var(--accent)}
+
+    .lang{display:flex; gap:8px; align-items:center}
+    .select{background:var(--field); border:1px solid var(--field-border); color:var(--text); border-radius:12px; padding:8px 12px}
+
+    .theme-toggle{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--field-border); border-radius:12px; background:var(--field)}
+    .theme-toggle .icon{font-size:1rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-badge" aria-hidden="true">WC</div>
+        <div>
+          <h1 class="title" data-i18n="title">Word & Character Counter</h1>
+          <p class="subtitle" data-i18n="subtitle">Live text analyzer — words, characters, lines, sentences, paragraphs, bytes, reading time</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="lang">
+          <label for="lang" class="muted" data-i18n="language">Language</label>
+          <select id="lang" class="select" aria-label="Language">
+            <option value="en">English</option>
+            <option value="uk" selected>Українська</option>
+          </select>
+        </div>
+        <button id="themeBtn" class="theme-toggle" aria-label="Toggle theme" title="Theme">
+          <span class="icon" id="themeIcon">🌞</span>
+          <span id="themeText">Light</span>
+        </button>
+        <div class="ad-slot" style="min-width:220px; min-height:60px">Ad slot 468×60</div>
+      </div>
+    </header>
+
+    <main class="grid" aria-live="polite">
+      <section class="card panel" aria-label="Text input">
+        <div class="toolbar">
+          <button class="btn" id="btnPaste" data-i18n="paste">Вставити (Ctrl/⌘+V)</button>
+          <button class="btn secondary" id="btnClear" data-i18n="clear">Очистити</button>
+          <button class="btn ghost" id="btnCleanFmt" title="Remove HTML & emoji" data-i18n="cleanFmt">Очистити форматування</button>
+          <label class="switch"><input type="checkbox" id="countSpaces" checked> <span data-i18n="countSpaces">рахувати пробіли</span></label>
+          <label class="switch"><input type="checkbox" id="smartWords" checked> <span data-i18n="smartWords">розумне розбиття слів</span></label>
+          <label class="switch"><input type="checkbox" id="trimLines" checked> <span data-i18n="trimLines">обрізати порожні рядки</span></label>
+        </div>
+        <textarea id="input" placeholder="Вставте або почніть вводити текст…" data-i18n-placeholder="placeholder"></textarea>
+        <div class="row">
+          <input type="file" id="file" accept=".txt" class="btn ghost" aria-label="Upload .txt" />
+          <button class="btn secondary" id="btnCopy" data-i18n="copyText">Копіювати текст</button>
+          <button class="btn secondary" id="btnDownload" data-i18n="downloadTxt">Завантажити .txt</button>
+        </div>
+        <div class="stats" id="stats"></div>
+        <div class="stats" id="selStats"></div>
+      </section>
+
+      <aside class="card" aria-label="Extras">
+        <div class="ad-slot" style="height:180px">Ad slot 300×250</div>
+        <h2 data-i18n="tips">Підказки</h2>
+        <ul>
+          <li><span class="kbd">Ctrl/⌘+V</span> — <span data-i18n="tipPaste">вставити текст</span></li>
+          <li><span class="kbd">Ctrl/⌘+A</span> — <span data-i18n="tipSelectAll">виділити все</span></li>
+          <li><span class="kbd">Ctrl/⌘+C</span> — <span data-i18n="tipCopy">копіювати виділене</span></li>
+        </ul>
+        <h2 data-i18n="privacy">Приватність</h2>
+        <p class="muted" data-i18n="privacyText">Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.</p>
+      </aside>
+    </main>
+
+    <footer>
+      <p>Made with <span aria-hidden="true">✨</span> by <a href="#">Your Brand</a>. <span class="muted" data-i18n="privacyShort">No data leaves your browser.</span></p>
+      <p class="muted" data-i18n="deploy">Deploy on GitHub Pages: create a repo, add this file as <b>index.html</b>, push, then in <i>Settings → Pages</i> pick <i>main / root</i>. Your site will appear at <code>https://&lt;user&gt;.github.io/&lt;repo&gt;/</code>.</p>
+    </footer>
+  </div>
+
+  <script>
+    const GA_ID = 'G-XXXXXXXXXX';
+    const ADSENSE_CLIENT = 'ca-pub-XXXXXXXXXXXXXXX';
+    const ADSENSE_SLOT_TOP = 'YYYYYYYYYY';
+    const ADSENSE_SLOT_SIDE = 'ZZZZZZZZZZ';
+
+    const I18N = {
+      en: { title:'Word & Character Counter', subtitle:'Live text analyzer — words, characters, lines, sentences, paragraphs, bytes, reading time', language:'Language', paste:'Paste (Ctrl/⌘+V)', clear:'Clear', cleanFmt:'Clear formatting', countSpaces:'count spaces', smartWords:'smart word split', trimLines:'trim empty lines', placeholder:'Paste or start typing here…', copyText:'Copy text', downloadTxt:'Download .txt', tips:'Quick tips', tipPaste:'paste text', tipSelectAll:'select all', tipCopy:'copy selected', privacy:'Privacy', privacyText:'All processing happens in your browser. No data leaves your device.', privacyShort:'No data leaves your browser.', deploy:'Deploy on GitHub Pages: create a repo, add this file as index.html, push, then in Settings → Pages pick main / root. Your site will appear at https://<user>.github.io/<repo>/' },
+      uk: { title:'Лічильник слів і символів', subtitle:'Живий аналізатор тексту — слова, символи, рядки, речення, абзаци, байти, час читання', language:'Мова', paste:'Вставити (Ctrl/⌘+V)', clear:'Очистити', cleanFmt:'Очистити форматування', countSpaces:'рахувати пробіли', smartWords:'розумне розбиття слів', trimLines:'обрізати порожні рядки', placeholder:'Вставте або почніть вводити текст…', copyText:'Копіювати текст', downloadTxt:'Завантажити .txt', tips:'Підказки', tipPaste:'вставити текст', tipSelectAll:'виділити все', tipCopy:'копіювати виділене', privacy:'Приватність', privacyText:'Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.', privacyShort:'Дані не залишають ваш браузер.', deploy:'Деплой на GitHub Pages: створіть репозиторій, додайте цей файл як index.html, запуште, у Settings → Pages виберіть main / root. Сайт буде на https://<user>.github.io/<repo>/' }
+    };
+
+    function applyI18n(lang){
+      const dict = I18N[lang] || I18N.en;
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent = dict[el.dataset.i18n] || el.textContent; });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{ const k=el.dataset.i18nPlaceholder; if(dict[k]) el.setAttribute('placeholder', dict[k]); });
+    }
+
+    const $ = (s, r=document)=>r.querySelector(s);
+    const $$ = (s, r=document)=>[...r.querySelectorAll(s)];
+
+    const input = $('#input');
+    const statsBox = $('#stats');
+    const selStatsBox = $('#selStats');
+
+    function normalizeNewlines(t){ return t.replace(/\r\n?/g, '\n'); }
+    function getBytesCount(t){ return new Blob([t]).size; }
+
+    function splitWords(t, smart){
+      if(!smart) return t.trim().split(/\s+/).filter(Boolean);
+      const tokens = t.match(/[A-Za-zÀ-ÖØ-öø-ÿҐЄІЇА-Яа-я0-9]+(?:['’\-][A-Za-zÀ-ÖØ-öø-ÿҐЄІЇА-Яа-я0-9]+)*/g);
+      return tokens ? tokens : [];
+    }
+
+    function count(t){
+      t = normalizeNewlines(t);
+      const countSpaces = $('#countSpaces').checked;
+      const smart = $('#smartWords').checked;
+      const trimLines = $('#trimLines').checked;
+
+      const charsWithSpaces = t.length;
+      const charsNoSpaces = t.replace(/\s/g,'').length;
+      const words = splitWords(t, smart).length;
+
+      const linesArr = t.split('\n');
+      const lines = trimLines ? linesArr.filter(x=>x.trim().length>0).length : linesArr.length;
+
+      const sentences = (t.match(/[^.!?]+[.!?]+(\s|$)/g)||[]).length;
+      const paragraphs = t.trim().length===0 ? 0 : normalizeNewlines(t).split(/\n\s*\n/).filter(Boolean).length;
+
+      const bytes = getBytesCount(t);
+      const wpm = 200, spm = 130;
+      const readingMin = words ? Math.max(0.1, words / wpm) : 0;
+      const speakingMin = words ? Math.max(0.1, words / spm) : 0;
+
+      return { words, chars: countSpaces ? charsWithSpaces : charsNoSpaces, charsWithSpaces, charsNoSpaces, lines, sentences, paragraphs, bytes, readingMin, speakingMin };
+    }
+
+    function fmtMins(m){ const mm=Math.floor(m); const ss=Math.round((m-mm)*60); if(mm<=0) return `${ss}s`; return `${mm}m ${ss}s`; }
+
+    function renderStats(s, lang='en'){
+      const t = I18N[lang]||I18N.en;
+      const items = [
+        [t.statWords || 'Words', s.words],
+        [t.statChars || 'Characters', s.chars],
+        [t.statCharsWS || 'Characters (with spaces)', s.charsWithSpaces],
+        [t.statCharsNS || 'Characters (no spaces)', s.charsNoSpaces],
+        [t.statLines || 'Lines', s.lines],
+        [t.statSent || 'Sentences', s.sentences],
+        [t.statPara || 'Paragraphs', s.paragraphs],
+        [t.statBytes || 'Bytes (UTF‑8)', s.bytes],
+        [t.statRead || 'Reading time', fmtMins(s.readingMin)],
+        [t.statSpeak || 'Speaking time', fmtMins(s.speakingMin)],
+      ];
+      statsBox.innerHTML = items.map(([k,v])=>`<div class="stat"><div class="label">${k}</div><div class="value">${v}</div></div>`).join('');
+    }
+
+    function getSelectionInTextarea(el){ const start = el.selectionStart, end = el.selectionEnd; if(start===end) return ''; return el.value.slice(start, end); }
+    function renderSelectionStats(lang){
+      const t = I18N[lang]||I18N.en;
+      const sel = getSelectionInTextarea(input);
+      if(!sel){ selStatsBox.innerHTML = ''; return; }
+      const words = splitWords(sel, $('#smartWords').checked).length;
+      const chars = $('#countSpaces').checked ? sel.length : sel.replace(/\s/g,'').length;
+      selStatsBox.innerHTML = [
+        `<div class="stat"><div class="label">${t.selHeader || 'Selection'}</div><div class="value">—</div></div>`,
+        `<div class="stat"><div class="label">${t.selWords || 'Selected words'}</div><div class="value">${words}</div></div>`,
+        `<div class="stat"><div class="label">${t.selChars || 'Selected characters'}</div><div class="value">${chars}</div></div>`
+      ].join('');
+    }
+
+    function decodeEntities(s){ const ta = document.createElement('textarea'); ta.innerHTML = s; return ta.value; }
+    function stripEmoji(s){ return s.replace(/[\u{1F300}-\u{1FAFF}\u{1F1E6}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, ''); }
+    function clearFormatting(text){ const noTags = text.replace(/<[^>]*>/g,' '); const decoded = decodeEntities(noTags).replace(/\u00A0/g,' '); return stripEmoji(decoded); }
+
+    function update(){ const lang = $('#lang').value; renderStats(count(input.value), lang); renderSelectionStats(lang); }
+
+    // Theme toggle (default light)
+    const THEME_KEY='wc_theme';
+    function applyTheme(theme){ document.documentElement.setAttribute('data-theme', theme); const isDark = theme==='dark'; $('#themeIcon').textContent = isDark ? '🌙' : '🌞'; $('#themeText').textContent = isDark ? 'Dark' : 'Light'; }
+    const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
+    applyTheme(savedTheme);
+    document.getElementById('themeBtn').addEventListener('click', ()=>{ const next = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark'; localStorage.setItem(THEME_KEY, next); applyTheme(next); });
+
+    // Actions
+    document.getElementById('btnPaste').addEventListener('click', async ()=>{ try{ input.value = (await navigator.clipboard.readText()) || input.value; update(); input.focus(); } catch(e){ alert('Clipboard access denied. Use Ctrl/⌘+V.'); } });
+    document.getElementById('btnClear').addEventListener('click', ()=>{ input.value=''; update(); input.focus(); });
+    document.getElementById('btnCleanFmt').addEventListener('click', ()=>{ input.value = clearFormatting(input.value); update(); });
+    document.getElementById('btnCopy').addEventListener('click', ()=>{ navigator.clipboard.writeText(input.value); });
+    document.getElementById('btnDownload').addEventListener('click', ()=>{ const blob = new Blob([input.value], {type:'text/plain;charset=utf-8'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'text.txt'; a.click(); URL.revokeObjectURL(a.href); });
+    document.getElementById('file').addEventListener('change', async (e)=>{ const f = e.target.files[0]; if(!f) return; const text = await f.text(); input.value = text; update(); });
+
+    input.addEventListener('input', update);
+    input.addEventListener('select', update);
+    input.addEventListener('keyup', update);
+    input.addEventListener('mouseup', update);
+    $$('#countSpaces, #smartWords, #trimLines').forEach(el=> el.addEventListener('change', update));
+
+    const savedLang = localStorage.getItem('wc_lang') || (navigator.language.startsWith('uk') ? 'uk' : 'en');
+    document.getElementById('lang').value = savedLang;
+    applyI18n(savedLang);
+    document.getElementById('lang').addEventListener('change', ()=>{ const lang = document.getElementById('lang').value; localStorage.setItem('wc_lang', lang); applyI18n(lang); update(); });
+
+    if(/^G-[A-Z0-9]+$/.test(GA_ID)){
+      const s = document.createElement('script'); s.async = true; s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`; document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} window.gtag = gtag; gtag('js', new Date()); gtag('config', GA_ID);
+    }
+
+    function mountAds(){ if(!/^ca-pub-/.test(ADSENSE_CLIENT)) return; const s = document.createElement('script'); s.async = true; s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`; s.crossOrigin='anonymous'; document.head.appendChild(s); const slots = document.querySelectorAll('.ad-slot'); slots.forEach((slot, i)=>{ const id = i===0 ? ADSENSE_SLOT_TOP : ADSENSE_SLOT_SIDE; slot.innerHTML = `<ins class=\"adsbygoogle\" style=\"display:block\" data-ad-client=\"${ADSENSE_CLIENT}\" data-ad-slot=\"${id}\" data-ad-format=\"auto\" data-full-width-responsive=\"true\"></ins>`; }); (window.adsbygoogle = window.adsbygoogle || []).push({}); }
+    mountAds();
+
+    function createManifest(){ const manifest = { name: 'Word & Character Counter', short_name: 'WC Counter', description: 'Live word & character counter that runs offline.', start_url: './', scope: './', display: 'standalone', background_color: '#ffffff', theme_color: '#5a48ff', icons: [ { src: makeIconDataURL(192), sizes: '192x192', type: 'image/png', purpose:'any' }, { src: makeIconDataURL(512), sizes: '512x512', type: 'image/png', purpose:'any maskable' } ] }; const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'}); const url = URL.createObjectURL(blob); document.getElementById('pwa-manifest').href = url; }
+
+    function makeIconDataURL(size){ const c = document.createElement('canvas'); c.width=c.height=size; const ctx=c.getContext('2d'); const g = ctx.createLinearGradient(0,0,size,size); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#cfd7ff'); ctx.fillStyle=g; ctx.fillRect(0,0,size,size); ctx.fillStyle='#101a2e'; ctx.font = `${Math.floor(size*0.36)}px Arial Black`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('WC', size/2, size/2+size*0.05); return c.toDataURL('image/png'); }
+
+    function registerSW(){ if(!('serviceWorker' in navigator)) return; const swCode = `const CACHE='wc-counter-v1'; const ASSETS=['./']; self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))}); self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim())}); self.addEventListener('fetch',e=>{const u=new URL(e.request.url); if(u.origin===location.origin){ e.respondWith(fetch(e.request).then(r=>{const rc=r.clone(); caches.open(CACHE).then(c=>c.put(e.request,rc)); return r}).catch(()=>caches.match(e.request).then(r=> r || caches.match('./')))) }})`;
+      const blob = new Blob([swCode], {type:'text/javascript'}); const url = URL.createObjectURL(blob); navigator.serviceWorker.register(url, {scope:'./'}).catch(()=>{}); }
+
+    createManifest();
+    registerSW();
+    update();
+  </script>
+</body>
+</html>
