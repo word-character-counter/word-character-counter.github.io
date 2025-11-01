@@ -156,6 +156,9 @@
           <li><span class="kbd">Ctrl/⌘+A</span> — <span data-i18n="tipSelectAll">виділити все</span></li>
           <li><span class="kbd">Ctrl/⌘+C</span> — <span data-i18n="tipCopy">копіювати виділене</span></li>
         </ul>
+        <div class="ad-slot" style="margin-top:10px">
+          <a href="https://randomname-generator.github.io/" target="_blank" rel="noopener">Try our Random Name Generator →</a>
+        </div>
         <h2 data-i18n="privacy">Приватність</h2>
         <p class="muted" data-i18n="privacyText">Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.</p>
       </aside>
@@ -308,6 +311,49 @@
       document.getElementById('nav-ua').style.display = showUA ? 'block' : 'none';
       document.getElementById('content-en').style.display = showUA ? 'none' : 'block';
       document.getElementById('nav-en').style.display = showUA ? 'none' : 'block';
+      updateFaqJsonLd(lang);
+    }
+
+    function updateFaqJsonLd(lang){
+      // Remove previous FAQ JSON-LD if exists
+      const prev = document.getElementById('faq-jsonld');
+      if(prev && prev.parentNode) prev.parentNode.removeChild(prev);
+      // Build new schema for current language
+      let schema;
+      if(lang === 'uk'){
+        schema = {
+          "@context":"https://schema.org",
+          "@type":"FAQPage",
+          "mainEntity":[
+            {"@type":"Question","name":"Як порахувати символи без пробілів?","acceptedAnswer":{"@type":"Answer","text":"Вставте текст і вимкніть перемикач «рахувати пробіли». Значення «Символи (без пробілів)» оновиться миттєво."}},
+            {"@type":"Question","name":"Чи працює підрахунок з різними мовами?","acceptedAnswer":{"@type":"Answer","text":"Так, інструмент коректно рахує український, англійський та змішаний текст."}},
+            {"@type":"Question","name":"Чи зберігається мій текст на сервері?","acceptedAnswer":{"@type":"Answer","text":"Ні. Усі розрахунки відбуваються локально у вашому браузері, без надсилання даних."}}
+          ]
+        };
+      } else {
+        schema = {
+          "@context":"https://schema.org",
+          "@type":"FAQPage",
+          "mainEntity":[
+            {"@type":"Question","name":"How to count characters without spaces?","acceptedAnswer":{"@type":"Answer","text":"Paste your text and toggle off \"count spaces\". The \"Characters (no spaces)\" value updates instantly."}},
+            {"@type":"Question","name":"Does it work with multiple languages?","acceptedAnswer":{"@type":"Answer","text":"Yes, the counter works well for English, Ukrainian, and mixed texts."}},
+            {"@type":"Question","name":"Is my text uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. All processing is local in your browser; nothing is sent to a server."}}
+          ]
+        };
+      }
+      const s = document.createElement('script');
+      s.type = 'application/ld+json';
+      s.id = 'faq-jsonld';
+      s.textContent = JSON.stringify(schema);
+      document.body.appendChild(s);
+    });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{ const k=el.dataset.i18nPlaceholder; if(dict[k]) el.setAttribute('placeholder', dict[k]); });
+      // Toggle SEO blocks and navs per language
+      const showUA = lang === 'uk';
+      document.getElementById('content-ua').style.display = showUA ? 'block' : 'none';
+      document.getElementById('nav-ua').style.display = showUA ? 'block' : 'none';
+      document.getElementById('content-en').style.display = showUA ? 'none' : 'block';
+      document.getElementById('nav-en').style.display = showUA ? 'none' : 'block';
     }
 
     const $ = (s, r=document)=>r.querySelector(s);
@@ -435,17 +481,6 @@
     update();
   </script>
 
-  <!-- FAQ JSON-LD (UA) -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {"@type":"Question","name":"Як порахувати символи без пробілів?","acceptedAnswer":{"@type":"Answer","text":"Вставте текст і вимкніть перемикач «рахувати пробіли». Значення «Символи (без пробілів)» оновиться миттєво."}},
-      {"@type":"Question","name":"Чи працює підрахунок з різними мовами?","acceptedAnswer":{"@type":"Answer","text":"Так, інструмент коректно рахує український, англійський та змішаний текст."}},
-      {"@type":"Question","name":"Чи зберігається мій текст на сервері?","acceptedAnswer":{"@type":"Answer","text":"Ні. Усі розрахунки відбуваються локально у вашому браузері, без надсилання даних."}}
-    ]
-  }
-  </script>
+  
 </body>
 </html>
