@@ -76,6 +76,16 @@
 
     .ad-slot{display:grid; place-items:center; background:var(--ad-bg); border:1px dashed var(--ad-dash); border-radius:12px; padding:10px; color:var(--muted); font-size:.9rem}
 
+.promo-slot{
+  display:grid; place-items:center;
+  background:var(--ad-bg);
+  border:1px dashed var(--ad-dash);
+  border-radius:12px;
+  padding:10px;
+  color:var(--muted);
+  font-size:.9rem
+}
+
     .panel{display:grid; gap:12px}
     .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
     .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace; background:var(--field); border:1px solid var(--field-border); border-radius:8px; padding:2px 6px; font-size:.85rem}
@@ -154,9 +164,11 @@
           <li><span class="kbd">Ctrl/⌘+A</span> — <span data-i18n="tipSelectAll">виділити все</span></li>
           <li><span class="kbd">Ctrl/⌘+C</span> — <span data-i18n="tipCopy">копіювати виділене</span></li>
         </ul>
-        <div class="ad-slot" style="margin-top:10px">
-          <a href="https://randomname-generator.github.io/" target="_blank" rel="noopener">Try our Random Name Generator →</a>
-        </div>
+       <div class="promo-slot" style="margin-top:10px">
+        <a href="https://randomname-generator.github.io/" target="_blank" rel="noopener">
+         Try our Random Name Generator →
+        </a>
+       </div>
         <h2 data-i18n="privacy">Приватність</h2>
         <p class="muted" data-i18n="privacyText">Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.</p>
       </aside>
@@ -262,8 +274,9 @@
 
     // I18N
     const I18N = {
-      en: { title:'Word & Character Counter', subtitle:'Live text analyzer — words, characters, lines, sentences, paragraphs, bytes, reading time', language:'Language', paste:'Paste (Ctrl/⌘+V)', clear:'Clear', cleanFmt:'Clear formatting', countSpaces:'count spaces', smartWords:'smart word split', trimLines:'trim empty lines', placeholder:'Paste or start typing here…', copyText:'Copy text', downloadTxt:'Download .txt', tips:'Quick tips', tipPaste:'paste text', tipSelectAll:'select all', tipCopy:'copy selected', privacy:'Privacy', privacyText:'All processing happens in your browser. No data leaves your device.', privacyShort:'No data leaves your browser.', statWords:'Words', statChars:'Characters', statCharsWS:'Characters (with spaces)', statCharsNS:'Characters (no spaces)', statLines:'Lines', statSent:'Sentences', statPara:'Paragraphs', statBytes:'Bytes (UTF-8)', statRead:'Reading time', statSpeak:'Speaking time', selHeader:'Selection', selWords:'Selected words', selChars:'Selected characters' },
-      uk: { title:'Лічильник слів і символів', subtitle:'Живий аналізатор тексту — слова, символи, рядки, речення, абзаци, байти, час читання', language:'Мова', paste:'Вставити (Ctrl/⌘+V)', clear:'Очистити', cleanFmt:'Очистити форматування', countSpaces:'рахувати пробіли', smartWords:'розумне розбиття слів', trimLines:'обрізати порожні рядки', placeholder:'Вставте або почніть вводити текст…', copyText:'Копіювати текст', downloadTxt:'Завантажити .txt', tips:'Підказки', tipPaste:'вставити текст', tipSelectAll:'виділити все', tipCopy:'копіювати виділене', privacy:'Приватність', privacyText:'Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.', privacyShort:'Дані не залишають ваш браузер.', statWords:'Слова', statChars:'Символи', statCharsWS:'Символи (з пробілами)', statCharsNS:'Символи (без пробілів)', statLines:'Рядки', statSent:'Речення', statPara:'Абзаци', statBytes:'Байти (UTF-8)', statRead:'Час читання', statSpeak:'Час озвучення', selHeader:'Виділення', selWords:'Слів у виділенні', selChars:'Символів у виділенні' }
+      en: { title:'Word & Character Counter', subtitle:'Live text analyzer — words, characters, lines, sentences, paragraphs, bytes, reading time', language:'Language', paste:'Paste (Ctrl/⌘+V)', clear:'Clear', cleanFmt:'Clear formatting', countSpaces:'count spaces', smartWords:'smart word split', trimLines:'trim empty lines', placeholder:'Paste or start typing here…', copyText:'Copy text', downloadTxt:'Download .txt', tips:'Quick tips', tipPaste:'paste text', tipSelectAll:'select all', tipCopy:'copy selected', privacy:'Privacy', privacyText:'All processing happens in your browser. No data leaves your device.', privacyShort:'No data leaves your browser.', statWords:'Words', statChars:'Characters', statCharsWS:'Characters (with spaces)', statCharsNS:'Characters (no spaces)', statLines:'Lines', statSent:'Sentences', statPara:'Paragraphs', statBytes:'Bytes (UTF-8)', statRead:'Reading time', statSpeak:'Speaking time', selHeader:'Selection', selWords:'Selected words', selCharsWS:'Selected characters (with spaces)',
+      selCharsNS:'Selected characters (no spaces)' },
+      uk: { title:'Лічильник слів і символів', subtitle:'Живий аналізатор тексту — слова, символи, рядки, речення, абзаци, байти, час читання', language:'Мова', paste:'Вставити (Ctrl/⌘+V)', clear:'Очистити', cleanFmt:'Очистити форматування', countSpaces:'рахувати пробіли', smartWords:'розумне розбиття слів', trimLines:'обрізати порожні рядки', placeholder:'Вставте або почніть вводити текст…', copyText:'Копіювати текст', downloadTxt:'Завантажити .txt', tips:'Підказки', tipPaste:'вставити текст', tipSelectAll:'виділити все', tipCopy:'копіювати виділене', privacy:'Приватність', privacyText:'Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.', privacyShort:'Дані не залишають ваш браузер.', statWords:'Слова', statChars:'Символи', statCharsWS:'Символи (з пробілами)', statCharsNS:'Символи (без пробілів)', statLines:'Рядки', statSent:'Речення', statPara:'Абзаци', statBytes:'Байти (UTF-8)', statRead:'Час читання', statSpeak:'Час озвучення', selHeader:'Виділення', selWords:'Слів у виділенні', selCharsWS:'Символи у виділенні (з пробілами)', selCharsNS:'Символи у виділенні (без пробілів)' }
     };
 
     function applyI18n(lang){
@@ -279,21 +292,31 @@
       updateFaqJsonLd(lang);
     }
 
-    function updateFaqJsonLd(lang){
-      const prev = $('#faq-jsonld'); if(prev) prev.remove();
-      const schema = (lang==='uk') ? {
-        "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-          {"@type":"Question","name":"Як порахувати символи без пробілів?","acceptedAnswer":{"@type":"Answer","text":"Вставте текст і вимкніть перемикач «рахувати пробіли». Значення «Символи (без пробілів)» оновиться миттєво."}},
-          {"@type":"Question","name":"Чи працює підрахунок з різними мовами?","acceptedAnswer":{"@type":"Answer","text":"Так, інструмент коректно рахує український, англійський та змішаний текст."}},
-          {"@type":"Question","name":"Чи зберігається мій текст на сервері?","acceptedAnswer":{"@type":"Answer","text":"Ні. Усі розрахунки відбуваються локально у вашому браузері, без надсилання даних."}}
-        ]} : {
-        "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-          {"@type":"Question","name":"How to count characters without spaces?","acceptedAnswer":{"@type":"Answer","text":"Paste your text and toggle off \"count spaces\". The \"Characters (no spaces)\" value updates instantly."}},
-          {"@type":"Question","name":"Does it work with multiple languages?","acceptedAnswer":{"@type":"Answer","text":"Yes, the counter works well for English, Ukrainian, and mixed texts."}},
-          {"@type":"Question","name":"Is my text uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. All processing is local in your browser; nothing is sent to a server."}}
-        ]};
-      const s = document.createElement('script'); s.type='application/ld+json'; s.id='faq-jsonld'; s.textContent = JSON.stringify(schema); document.body.appendChild(s);
-    }
+function updateFaqJsonLd(lang){
+  const prev = document.getElementById('faq-jsonld');
+  if (prev) prev.remove();
+
+  const schema = (lang === 'uk') ? {
+    "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Як порахувати символи без пробілів?","acceptedAnswer":{"@type":"Answer","text":"Вставте текст і вимкніть перемикач «рахувати пробіли». Значення «Символи (без пробілів)» оновиться миттєво."}},
+      {"@type":"Question","name":"Чи працює підрахунок з різними мовами?","acceptedAnswer":{"@type":"Answer","text":"Так, інструмент коректно рахує український, англійський та змішаний текст."}},
+      {"@type":"Question","name":"Чи зберігається мій текст на сервері?","acceptedAnswer":{"@type":"Answer","text":"Ні. Усі розрахунки відбуваються локально у вашому браузері, без надсилання даних."}}
+    ]
+  } : {
+    "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"How to count characters without spaces?","acceptedAnswer":{"@type":"Answer","text":"Paste your text and toggle off \"count spaces\". The \"Characters (no spaces)\" value updates instantly."}},
+      {"@type":"Question","name":"Does it work with multiple languages?","acceptedAnswer":{"@type":"Answer","text":"Yes, the counter works well for English, Ukrainian, and mixed texts."}},
+      {"@type":"Question","name":"Is my text uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. All processing is local in your browser; nothing is sent to a server."}}
+    ]
+  };
+
+  const s = document.createElement('script');
+  s.type = 'application/ld+json';
+  s.id = 'faq-jsonld';
+  s.textContent = JSON.stringify(schema);
+  document.head.appendChild(s);
+}
+
 
     // Counting logic
     const input = $('#input');
@@ -335,14 +358,22 @@
     }
     function getSelectionInTextarea(el){ const {selectionStart:start, selectionEnd:end} = el; return (start===end)?'':el.value.slice(start,end); }
     function renderSelectionStats(lang){
-      const t = I18N[lang]||I18N.en; const sel = getSelectionInTextarea(input); if(!sel){ selStatsBox.innerHTML=''; return; }
-      const words = splitWords(sel, $('#smartWords').checked).length; const chars = $('#countSpaces').checked ? sel.length : sel.replace(/\s/g,'').length;
+      const t = I18N[lang]||I18N.en;
+      const sel = getSelectionInTextarea(input);
+        if(!sel){ selStatsBox.innerHTML = ''; return; }
+
+      const words  = splitWords(sel, $('#smartWords').checked).length;
+      const charsWS = sel.length;
+      const charsNS = sel.replace(/\s/g,'').length;
+
       selStatsBox.innerHTML = [
-        `<div class="stat"><div class="label">${t.selHeader}</div><div class="value">—</div></div>`,
-        `<div class="stat"><div class="label">${t.selWords}</div><div class="value">${words}</div></div>`,
-        `<div class="stat"><div class="label">${t.selChars}</div><div class="value">${chars}</div></div>`
-      ].join('');
-    }
+       `<div class="stat"><div class="label">${t.selHeader}</div><div class="value">—</div></div>`,
+       `<div class="stat"><div class="label">${t.selWords}</div><div class="value">${words}</div></div>`,
+       `<div class="stat"><div class="label">${t.selCharsWS}</div><div class="value">${charsWS}</div></div>`,
+       `<div class="stat"><div class="label">${t.selCharsNS}</div><div class="value">${charsNS}</div></div>`
+     ].join('');
+}
+
 
     function decodeEntities(s){ const ta=document.createElement('textarea'); ta.innerHTML=s; return ta.value; }
     function stripEmoji(s){ return s.replace(/[\u{1F300}-\u{1FAFF}\u{1F1E6}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu,''); }
@@ -374,6 +405,7 @@
     const savedLang = localStorage.getItem('wc_lang') || (navigator.language.startsWith('uk') ? 'uk' : 'en');
     $('#lang').value = savedLang;
     applyI18n(savedLang);
+	updateFaqJsonLd(savedLang);
     $('#lang').addEventListener('change', ()=>{ const lang=$('#lang').value; localStorage.setItem('wc_lang',lang); applyI18n(lang); update(); });
 
     // GA (guarded)
