@@ -5,18 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Word & Character Counter — Лічильник слів і символів</title>
   <meta name="description" content="Миттєвий підрахунок слів і символів. Показує рядки, речення, абзаци, байти, час читання/озвучення. Працює офлайн у вашому браузері." />
-  <meta name="keywords" content="лічильник слів,лічильник символів,word counter,character counter,text analyzer" />
+  <meta name="keywords" content="лічильник слів,лічильник символів,word counter,character counter,text analyzer,count characters without spaces" />
   <meta property="og:title" content="Word & Character Counter — Live Text Analyzer" />
   <meta property="og:description" content="Paste or type to get live counts: words, characters, lines, sentences, paragraphs, bytes, reading time." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://word-character-counter.github.io//" />
+  <meta property="og:url" content="https://word-character-counter.github.io/" />
   <meta property="og:image" content="/og-image.png" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%23ffffff'/%3E%3Cstop offset='.9' stop-color='%23cfd7ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='6' y='6' width='52' height='52' rx='14' fill='url(%23g)'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-size='26' fill='%23101a2e' font-family='Arial'%3EWC%3C/text%3E%3C/svg%3E" />
   <link id="pwa-manifest" rel="manifest" href="#" />
   <style>
-    /* ===== THEME (default: light) ===== */
     :root{
-      /* Light */
       --bg:#f6f8ff; --card:#ffffff; --muted:#6b7390; --text:#0f1425; --brand:#5a48ff; --accent:#0aa07a; --ring:0 0 0 3px rgba(90,72,255,.18);
       --border: rgba(16,20,37,.08);
       --stat:#f2f5ff; --stat-border: rgba(16,20,37,.10);
@@ -92,6 +90,8 @@
 
     .theme-toggle{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--field-border); border-radius:12px; background:var(--field)}
     .theme-toggle .icon{font-size:1rem}
+
+    nav.card a{margin-right:10px}
   </style>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8CLY8QCD6P"></script>
@@ -99,7 +99,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-8CLY8QCD6P');
 </script>
 </head>
@@ -160,6 +159,93 @@
         <h2 data-i18n="privacy">Приватність</h2>
         <p class="muted" data-i18n="privacyText">Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.</p>
       </aside>
+
+      <!-- UA NAV -->
+      <nav class="card" id="nav-ua" style="grid-column:1 / -1; display:none">
+        <strong>Навігація:</strong>
+        <a href="#count-without-spaces">Порахувати символи без пробілів</a> ·
+        <a href="#count-selection">Порахувати виділення</a> ·
+        <a href="#word-vs-character">Різниця між словами і символами</a> ·
+        <a href="#privacy-local">Приватність і офлайн</a> ·
+        <a href="#faq">Питання-відповіді</a>
+      </nav>
+
+      <!-- EN NAV -->
+      <nav class="card" id="nav-en" style="grid-column:1 / -1; display:none">
+        <strong>Navigation:</strong>
+        <a href="#count-without-spaces-en">Count without spaces</a> ·
+        <a href="#count-selection-en">Count selection</a> ·
+        <a href="#privacy-local-en">Privacy & offline</a>
+      </nav>
+
+      <!-- UA CONTENT -->
+      <section id="content-ua" style="grid-column:1 / -1; display:none">
+        <section class="card" id="count-without-spaces">
+          <h2>Як порахувати символи без пробілів</h2>
+          <p>Щоб отримати кількість символів без пробілів, вставте текст у поле вище та вимкніть перемикач <b>«рахувати пробіли»</b>. Лічильник одразу оновить два значення — «Символи (з пробілами)» і «Символи (без пробілів)».</p>
+          <ul>
+            <li>Працює з українською, англійською та змішаним текстом.</li>
+            <li>Підтримуються великі обсяги — можна вставляти цілі статті.</li>
+            <li>Додатково показує рядки, речення, абзаци та байти (UTF-8).</li>
+          </ul>
+        </section>
+
+        <section class="card" id="count-selection">
+          <h2>Як порахувати слова і символи у виділенні</h2>
+          <p>Виділіть потрібний фрагмент у текстовому полі — нижче з’явиться блок «Виділення» з двома окремими лічильниками: «Слів у виділенні» та «Символів у виділенні». Зручно для окремого абзацу чи заголовка.</p>
+          <ul>
+            <li>Підрахунок оновлюється миттєво при зміні виділення.</li>
+            <li>Параметр «розумне розбиття слів» коректно обробляє дефіси та апострофи.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="word-vs-character">
+          <h2>Слова vs. символи: у чому різниця</h2>
+          <p>Слова — це кількість лексем у тексті, а символи — загальна довжина рядка. Для технічних обмежень важливі символи, для оцінки часу читання — слова.</p>
+          <ul>
+            <li><b>Слова:</b> корисні для оцінки часу читання/озвучення.</li>
+            <li><b>Символи:</b> важливі для форм із лімітами довжини.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="privacy-local">
+          <h2>Приватність і офлайн-режим</h2>
+          <p>Усі підрахунки виконуються у вашому браузері — дані нікуди не відправляються. Сайт підтримує офлайн-режим: після першого відкриття інструмент працюватиме навіть без інтернету.</p>
+        </section>
+
+        <section class="card" id="faq">
+          <h2>Питання-відповіді</h2>
+          <h3>Чи рахує інструмент різні мови?</h3>
+          <p>Так, підрахунок коректний для української, англійської та змішаних текстів.</p>
+          <h3>Як отримати символи без пробілів?</h3>
+          <p>Вимкніть перемикач «рахувати пробіли». Значення «Символи (без пробілів)» оновиться миттєво.</p>
+          <h3>Чи зберігається мій текст?</h3>
+          <p>Ні. Обробка локальна, вміст не відправляється на сервер.</p>
+        </section>
+      </section>
+
+      <!-- EN CONTENT -->
+      <section id="content-en" style="grid-column:1 / -1; display:none">
+        <section class="card" id="count-without-spaces-en">
+          <h2>Count characters without spaces</h2>
+          <p>Paste your text above and toggle <b>“count spaces”</b> off to see the value without spaces. The counter instantly updates both metrics — “Characters (with spaces)” and “Characters (no spaces)”.</p>
+          <ul>
+            <li>Works with English, Ukrainian, and mixed texts.</li>
+            <li>Handles large inputs — full articles are fine.</li>
+            <li>Also shows lines, sentences, paragraphs, and bytes (UTF-8).</li>
+          </ul>
+        </section>
+
+        <section class="card" id="count-selection-en">
+          <h2>Count words and characters in a selection</h2>
+          <p>Select any fragment inside the textarea — a “Selection” box appears with “Selected words” and “Selected characters”. Perfect for headings or snippets with strict limits.</p>
+        </section>
+
+        <section class="card" id="privacy-local-en">
+          <h2>Privacy & offline</h2>
+          <p>All processing happens in your browser; nothing is uploaded. The site works offline after the first visit.</p>
+        </section>
+      </section>
     </main>
 
     <footer>
@@ -175,41 +261,40 @@
 
     const I18N = {
       en: { title:'Word & Character Counter', subtitle:'Live text analyzer — words, characters, lines, sentences, paragraphs, bytes, reading time', language:'Language', paste:'Paste (Ctrl/⌘+V)', clear:'Clear', cleanFmt:'Clear formatting', countSpaces:'count spaces', smartWords:'smart word split', trimLines:'trim empty lines', placeholder:'Paste or start typing here…', copyText:'Copy text', downloadTxt:'Download .txt', tips:'Quick tips', tipPaste:'paste text', tipSelectAll:'select all', tipCopy:'copy selected', privacy:'Privacy', privacyText:'All processing happens in your browser. No data leaves your device.', privacyShort:'No data leaves your browser.' },
- uk: {
-  title:'Лічильник слів і символів',
-  subtitle:'Живий аналізатор тексту — слова, символи, рядки, речення, абзаци, байти, час читання',
-  language:'Мова',
-  paste:'Вставити (Ctrl/⌘+V)',
-  clear:'Очистити',
-  cleanFmt:'Очистити форматування',
-  countSpaces:'рахувати пробіли',
-  smartWords:'розумне розбиття слів',
-  trimLines:'обрізати порожні рядки',
-  placeholder:'Вставте або почніть вводити текст…',
-  copyText:'Копіювати текст',
-  downloadTxt:'Завантажити .txt',
-  tips:'Підказки',
-  tipPaste:'вставити текст',
-  tipSelectAll:'виділити все',
-  tipCopy:'копіювати виділене',
-  privacy:'Приватність',
-  privacyText:'Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.',
-  privacyShort:'Дані не залишають ваш браузер.',
-  // ↓ додано для українських назв лічильників
-  statWords:'Слова',
-  statChars:'Символи',
-  statCharsWS:'Символи (з пробілами)',
-  statCharsNS:'Символи (без пробілів)',
-  statLines:'Рядки',
-  statSent:'Речення',
-  statPara:'Абзаци',
-  statBytes:'Байти (UTF-8)',
-  statRead:'Час читання',
-  statSpeak:'Час озвучення',
-  selHeader:'Виділення',
-  selWords:'Слів у виділенні',
-  selChars:'Символів у виділенні'}
-
+      uk: {
+        title:'Лічильник слів і символів',
+        subtitle:'Живий аналізатор тексту — слова, символи, рядки, речення, абзаци, байти, час читання',
+        language:'Мова',
+        paste:'Вставити (Ctrl/⌘+V)',
+        clear:'Очистити',
+        cleanFmt:'Очистити форматування',
+        countSpaces:'рахувати пробіли',
+        smartWords:'розумне розбиття слів',
+        trimLines:'обрізати порожні рядки',
+        placeholder:'Вставте або почніть вводити текст…',
+        copyText:'Копіювати текст',
+        downloadTxt:'Завантажити .txt',
+        tips:'Підказки',
+        tipPaste:'вставити текст',
+        tipSelectAll:'виділити все',
+        tipCopy:'копіювати виділене',
+        privacy:'Приватність',
+        privacyText:'Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.',
+        privacyShort:'Дані не залишають ваш браузер.',
+        statWords:'Слова',
+        statChars:'Символи',
+        statCharsWS:'Символи (з пробілами)',
+        statCharsNS:'Символи (без пробілів)',
+        statLines:'Рядки',
+        statSent:'Речення',
+        statPara:'Абзаци',
+        statBytes:'Байти (UTF-8)',
+        statRead:'Час читання',
+        statSpeak:'Час озвучення',
+        selHeader:'Виділення',
+        selWords:'Слів у виділенні',
+        selChars:'Символів у виділенні'
+      }
     };
 
     function applyI18n(lang){
@@ -217,6 +302,12 @@
       document.documentElement.lang = lang;
       document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent = dict[el.dataset.i18n] || el.textContent; });
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{ const k=el.dataset.i18nPlaceholder; if(dict[k]) el.setAttribute('placeholder', dict[k]); });
+      // Toggle SEO blocks and navs per language
+      const showUA = lang === 'uk';
+      document.getElementById('content-ua').style.display = showUA ? 'block' : 'none';
+      document.getElementById('nav-ua').style.display = showUA ? 'block' : 'none';
+      document.getElementById('content-en').style.display = showUA ? 'none' : 'block';
+      document.getElementById('nav-en').style.display = showUA ? 'none' : 'block';
     }
 
     const $ = (s, r=document)=>r.querySelector(s);
@@ -342,6 +433,19 @@
     createManifest();
     registerSW();
     update();
+  </script>
+
+  <!-- FAQ JSON-LD (UA) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Як порахувати символи без пробілів?","acceptedAnswer":{"@type":"Answer","text":"Вставте текст і вимкніть перемикач «рахувати пробіли». Значення «Символи (без пробілів)» оновиться миттєво."}},
+      {"@type":"Question","name":"Чи працює підрахунок з різними мовами?","acceptedAnswer":{"@type":"Answer","text":"Так, інструмент коректно рахує український, англійський та змішаний текст."}},
+      {"@type":"Question","name":"Чи зберігається мій текст на сервері?","acceptedAnswer":{"@type":"Answer","text":"Ні. Усі розрахунки відбуваються локально у вашому браузері, без надсилання даних."}}
+    ]
+  }
   </script>
 </body>
 </html>
