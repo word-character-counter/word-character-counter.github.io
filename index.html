@@ -78,7 +78,7 @@
 
     .panel{display:grid; gap:12px}
     .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
-    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background:var(--field); border:1px solid var(--field-border); border-radius:8px; padding:2px 6px; font-size:.85rem}
+    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace; background:var(--field); border:1px solid var(--field-border); border-radius:8px; padding:2px 6px; font-size:.85rem}
     .muted{color:var(--muted)}
     footer{margin-top:28px; color:var(--muted); font-size:.9rem}
 
@@ -97,9 +97,7 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8CLY8QCD6P"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-8CLY8QCD6P');
+  function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-8CLY8QCD6P');
 </script>
 </head>
 <body>
@@ -163,7 +161,6 @@
         <p class="muted" data-i18n="privacyText">Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.</p>
       </aside>
 
-      <!-- UA NAV -->
       <nav class="card" id="nav-ua" style="grid-column:1 / -1; display:none">
         <strong>Навігація:</strong>
         <a href="#count-without-spaces">Порахувати символи без пробілів</a> ·
@@ -173,7 +170,6 @@
         <a href="#faq">Питання-відповіді</a>
       </nav>
 
-      <!-- EN NAV -->
       <nav class="card" id="nav-en" style="grid-column:1 / -1; display:none">
         <strong>Navigation:</strong>
         <a href="#count-without-spaces-en">Count without spaces</a> ·
@@ -181,7 +177,6 @@
         <a href="#privacy-local-en">Privacy & offline</a>
       </nav>
 
-      <!-- UA CONTENT -->
       <section id="content-ua" style="grid-column:1 / -1; display:none">
         <section class="card" id="count-without-spaces">
           <h2>Як порахувати символи без пробілів</h2>
@@ -227,7 +222,6 @@
         </section>
       </section>
 
-      <!-- EN CONTENT -->
       <section id="content-en" style="grid-column:1 / -1; display:none">
         <section class="card" id="count-without-spaces-en">
           <h2>Count characters without spaces</h2>
@@ -262,42 +256,14 @@
     const ADSENSE_SLOT_TOP = 'YYYYYYYYYY';
     const ADSENSE_SLOT_SIDE = 'ZZZZZZZZZZ';
 
+    // Helpers first
+    const $ = (s, r=document)=>r.querySelector(s);
+    const $$ = (s, r=document)=>[...r.querySelectorAll(s)];
+
+    // I18N
     const I18N = {
-      en: { title:'Word & Character Counter', subtitle:'Live text analyzer — words, characters, lines, sentences, paragraphs, bytes, reading time', language:'Language', paste:'Paste (Ctrl/⌘+V)', clear:'Clear', cleanFmt:'Clear formatting', countSpaces:'count spaces', smartWords:'smart word split', trimLines:'trim empty lines', placeholder:'Paste or start typing here…', copyText:'Copy text', downloadTxt:'Download .txt', tips:'Quick tips', tipPaste:'paste text', tipSelectAll:'select all', tipCopy:'copy selected', privacy:'Privacy', privacyText:'All processing happens in your browser. No data leaves your device.', privacyShort:'No data leaves your browser.' },
-      uk: {
-        title:'Лічильник слів і символів',
-        subtitle:'Живий аналізатор тексту — слова, символи, рядки, речення, абзаци, байти, час читання',
-        language:'Мова',
-        paste:'Вставити (Ctrl/⌘+V)',
-        clear:'Очистити',
-        cleanFmt:'Очистити форматування',
-        countSpaces:'рахувати пробіли',
-        smartWords:'розумне розбиття слів',
-        trimLines:'обрізати порожні рядки',
-        placeholder:'Вставте або почніть вводити текст…',
-        copyText:'Копіювати текст',
-        downloadTxt:'Завантажити .txt',
-        tips:'Підказки',
-        tipPaste:'вставити текст',
-        tipSelectAll:'виділити все',
-        tipCopy:'копіювати виділене',
-        privacy:'Приватність',
-        privacyText:'Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.',
-        privacyShort:'Дані не залишають ваш браузер.',
-        statWords:'Слова',
-        statChars:'Символи',
-        statCharsWS:'Символи (з пробілами)',
-        statCharsNS:'Символи (без пробілів)',
-        statLines:'Рядки',
-        statSent:'Речення',
-        statPara:'Абзаци',
-        statBytes:'Байти (UTF-8)',
-        statRead:'Час читання',
-        statSpeak:'Час озвучення',
-        selHeader:'Виділення',
-        selWords:'Слів у виділенні',
-        selChars:'Символів у виділенні'
-      }
+      en: { title:'Word & Character Counter', subtitle:'Live text analyzer — words, characters, lines, sentences, paragraphs, bytes, reading time', language:'Language', paste:'Paste (Ctrl/⌘+V)', clear:'Clear', cleanFmt:'Clear formatting', countSpaces:'count spaces', smartWords:'smart word split', trimLines:'trim empty lines', placeholder:'Paste or start typing here…', copyText:'Copy text', downloadTxt:'Download .txt', tips:'Quick tips', tipPaste:'paste text', tipSelectAll:'select all', tipCopy:'copy selected', privacy:'Privacy', privacyText:'All processing happens in your browser. No data leaves your device.', privacyShort:'No data leaves your browser.', statWords:'Words', statChars:'Characters', statCharsWS:'Characters (with spaces)', statCharsNS:'Characters (no spaces)', statLines:'Lines', statSent:'Sentences', statPara:'Paragraphs', statBytes:'Bytes (UTF-8)', statRead:'Reading time', statSpeak:'Speaking time', selHeader:'Selection', selWords:'Selected words', selChars:'Selected characters' },
+      uk: { title:'Лічильник слів і символів', subtitle:'Живий аналізатор тексту — слова, символи, рядки, речення, абзаци, байти, час читання', language:'Мова', paste:'Вставити (Ctrl/⌘+V)', clear:'Очистити', cleanFmt:'Очистити форматування', countSpaces:'рахувати пробіли', smartWords:'розумне розбиття слів', trimLines:'обрізати порожні рядки', placeholder:'Вставте або почніть вводити текст…', copyText:'Копіювати текст', downloadTxt:'Завантажити .txt', tips:'Підказки', tipPaste:'вставити текст', tipSelectAll:'виділити все', tipCopy:'копіювати виділене', privacy:'Приватність', privacyText:'Усі обчислення виконуються у вашому браузері. Дані нікуди не надсилаються.', privacyShort:'Дані не залишають ваш браузер.', statWords:'Слова', statChars:'Символи', statCharsWS:'Символи (з пробілами)', statCharsNS:'Символи (без пробілів)', statLines:'Рядки', statSent:'Речення', statPara:'Абзаци', statBytes:'Байти (UTF-8)', statRead:'Час читання', statSpeak:'Час озвучення', selHeader:'Виділення', selWords:'Слів у виділенні', selChars:'Символів у виділенні' }
     };
 
     function applyI18n(lang){
@@ -305,150 +271,98 @@
       document.documentElement.lang = lang;
       document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent = dict[el.dataset.i18n] || el.textContent; });
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{ const k=el.dataset.i18nPlaceholder; if(dict[k]) el.setAttribute('placeholder', dict[k]); });
-      // Toggle SEO blocks and navs per language
       const showUA = lang === 'uk';
-      document.getElementById('content-ua').style.display = showUA ? 'block' : 'none';
-      document.getElementById('nav-ua').style.display = showUA ? 'block' : 'none';
-      document.getElementById('content-en').style.display = showUA ? 'none' : 'block';
-      document.getElementById('nav-en').style.display = showUA ? 'none' : 'block';
+      $('#content-ua').style.display = showUA ? 'block' : 'none';
+      $('#nav-ua').style.display = showUA ? 'block' : 'none';
+      $('#content-en').style.display = showUA ? 'none' : 'block';
+      $('#nav-en').style.display = showUA ? 'none' : 'block';
       updateFaqJsonLd(lang);
     }
 
     function updateFaqJsonLd(lang){
-      // Remove previous FAQ JSON-LD if exists
-      const prev = document.getElementById('faq-jsonld');
-      if(prev && prev.parentNode) prev.parentNode.removeChild(prev);
-      // Build new schema for current language
-      let schema;
-      if(lang === 'uk'){
-        schema = {
-          "@context":"https://schema.org",
-          "@type":"FAQPage",
-          "mainEntity":[
-            {"@type":"Question","name":"Як порахувати символи без пробілів?","acceptedAnswer":{"@type":"Answer","text":"Вставте текст і вимкніть перемикач «рахувати пробіли». Значення «Символи (без пробілів)» оновиться миттєво."}},
-            {"@type":"Question","name":"Чи працює підрахунок з різними мовами?","acceptedAnswer":{"@type":"Answer","text":"Так, інструмент коректно рахує український, англійський та змішаний текст."}},
-            {"@type":"Question","name":"Чи зберігається мій текст на сервері?","acceptedAnswer":{"@type":"Answer","text":"Ні. Усі розрахунки відбуваються локально у вашому браузері, без надсилання даних."}}
-          ]
-        };
-      } else {
-        schema = {
-          "@context":"https://schema.org",
-          "@type":"FAQPage",
-          "mainEntity":[
-            {"@type":"Question","name":"How to count characters without spaces?","acceptedAnswer":{"@type":"Answer","text":"Paste your text and toggle off \"count spaces\". The \"Characters (no spaces)\" value updates instantly."}},
-            {"@type":"Question","name":"Does it work with multiple languages?","acceptedAnswer":{"@type":"Answer","text":"Yes, the counter works well for English, Ukrainian, and mixed texts."}},
-            {"@type":"Question","name":"Is my text uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. All processing is local in your browser; nothing is sent to a server."}}
-          ]
-        };
-      }
-      const s = document.createElement('script');
-      s.type = 'application/ld+json';
-      s.id = 'faq-jsonld';
-      s.textContent = JSON.stringify(schema);
-      document.body.appendChild(s);
-    });
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{ const k=el.dataset.i18nPlaceholder; if(dict[k]) el.setAttribute('placeholder', dict[k]); });
-      // Toggle SEO blocks and navs per language
-      const showUA = lang === 'uk';
-      document.getElementById('content-ua').style.display = showUA ? 'block' : 'none';
-      document.getElementById('nav-ua').style.display = showUA ? 'block' : 'none';
-      document.getElementById('content-en').style.display = showUA ? 'none' : 'block';
-      document.getElementById('nav-en').style.display = showUA ? 'none' : 'block';
+      const prev = $('#faq-jsonld'); if(prev) prev.remove();
+      const schema = (lang==='uk') ? {
+        "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+          {"@type":"Question","name":"Як порахувати символи без пробілів?","acceptedAnswer":{"@type":"Answer","text":"Вставте текст і вимкніть перемикач «рахувати пробіли». Значення «Символи (без пробілів)» оновиться миттєво."}},
+          {"@type":"Question","name":"Чи працює підрахунок з різними мовами?","acceptedAnswer":{"@type":"Answer","text":"Так, інструмент коректно рахує український, англійський та змішаний текст."}},
+          {"@type":"Question","name":"Чи зберігається мій текст на сервері?","acceptedAnswer":{"@type":"Answer","text":"Ні. Усі розрахунки відбуваються локально у вашому браузері, без надсилання даних."}}
+        ]} : {
+        "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+          {"@type":"Question","name":"How to count characters without spaces?","acceptedAnswer":{"@type":"Answer","text":"Paste your text and toggle off \"count spaces\". The \"Characters (no spaces)\" value updates instantly."}},
+          {"@type":"Question","name":"Does it work with multiple languages?","acceptedAnswer":{"@type":"Answer","text":"Yes, the counter works well for English, Ukrainian, and mixed texts."}},
+          {"@type":"Question","name":"Is my text uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. All processing is local in your browser; nothing is sent to a server."}}
+        ]};
+      const s = document.createElement('script'); s.type='application/ld+json'; s.id='faq-jsonld'; s.textContent = JSON.stringify(schema); document.body.appendChild(s);
     }
 
-    const $ = (s, r=document)=>r.querySelector(s);
-    const $$ = (s, r=document)=>[...r.querySelectorAll(s)];
-
+    // Counting logic
     const input = $('#input');
     const statsBox = $('#stats');
     const selStatsBox = $('#selStats');
 
     function normalizeNewlines(t){ return t.replace(/\r\n?/g, '\n'); }
     function getBytesCount(t){ return new Blob([t]).size; }
-
     function splitWords(t, smart){
       if(!smart) return t.trim().split(/\s+/).filter(Boolean);
       const tokens = t.match(/[A-Za-zÀ-ÖØ-öø-ÿҐЄІЇА-Яа-я0-9]+(?:['’\-][A-Za-zÀ-ÖØ-öø-ÿҐЄІЇА-Яа-я0-9]+)*/g);
       return tokens ? tokens : [];
     }
-
     function count(t){
       t = normalizeNewlines(t);
       const countSpaces = $('#countSpaces').checked;
       const smart = $('#smartWords').checked;
       const trimLines = $('#trimLines').checked;
-
       const charsWithSpaces = t.length;
       const charsNoSpaces = t.replace(/\s/g,'').length;
       const words = splitWords(t, smart).length;
-
       const linesArr = t.split('\n');
       const lines = trimLines ? linesArr.filter(x=>x.trim().length>0).length : linesArr.length;
-
       const sentences = (t.match(/[^.!?]+[.!?]+(\s|$)/g)||[]).length;
       const paragraphs = t.trim().length===0 ? 0 : normalizeNewlines(t).split(/\n\s*\n/).filter(Boolean).length;
-
       const bytes = getBytesCount(t);
-      const wpm = 200, spm = 130;
-      const readingMin = words ? Math.max(0.1, words / wpm) : 0;
-      const speakingMin = words ? Math.max(0.1, words / spm) : 0;
-
-      return { words, chars: countSpaces ? charsWithSpaces : charsNoSpaces, charsWithSpaces, charsNoSpaces, lines, sentences, paragraphs, bytes, readingMin, speakingMin };
+      const wpm=200, spm=130; const readingMin = words?Math.max(0.1, words/wpm):0; const speakingMin = words?Math.max(0.1, words/spm):0;
+      return { words, chars: (countSpaces?charsWithSpaces:charsNoSpaces), charsWithSpaces, charsNoSpaces, lines, sentences, paragraphs, bytes, readingMin, speakingMin };
     }
-
-    function fmtMins(m){ const mm=Math.floor(m); const ss=Math.round((m-mm)*60); if(mm<=0) return `${ss}s`; return `${mm}m ${ss}s`; }
-
+    function fmtMins(m){ const mm=Math.floor(m), ss=Math.round((m-mm)*60); return (mm<=0)?`${ss}s`:`${mm}m ${ss}s`; }
     function renderStats(s, lang='en'){
       const t = I18N[lang]||I18N.en;
       const items = [
-        [t.statWords || 'Words', s.words],
-        [t.statChars || 'Characters', s.chars],
-        [t.statCharsWS || 'Characters (with spaces)', s.charsWithSpaces],
-        [t.statCharsNS || 'Characters (no spaces)', s.charsNoSpaces],
-        [t.statLines || 'Lines', s.lines],
-        [t.statSent || 'Sentences', s.sentences],
-        [t.statPara || 'Paragraphs', s.paragraphs],
-        [t.statBytes || 'Bytes (UTF‑8)', s.bytes],
-        [t.statRead || 'Reading time', fmtMins(s.readingMin)],
-        [t.statSpeak || 'Speaking time', fmtMins(s.speakingMin)],
+        [t.statWords, s.words], [t.statChars, s.chars], [t.statCharsWS, s.charsWithSpaces], [t.statCharsNS, s.charsNoSpaces],
+        [t.statLines, s.lines], [t.statSent, s.sentences], [t.statPara, s.paragraphs], [t.statBytes, s.bytes],
+        [t.statRead, fmtMins(s.readingMin)], [t.statSpeak, fmtMins(s.speakingMin)],
       ];
       statsBox.innerHTML = items.map(([k,v])=>`<div class="stat"><div class="label">${k}</div><div class="value">${v}</div></div>`).join('');
     }
-
-    function getSelectionInTextarea(el){ const start = el.selectionStart, end = el.selectionEnd; if(start===end) return ''; return el.value.slice(start, end); }
+    function getSelectionInTextarea(el){ const {selectionStart:start, selectionEnd:end} = el; return (start===end)?'':el.value.slice(start,end); }
     function renderSelectionStats(lang){
-      const t = I18N[lang]||I18N.en;
-      const sel = getSelectionInTextarea(input);
-      if(!sel){ selStatsBox.innerHTML = ''; return; }
-      const words = splitWords(sel, $('#smartWords').checked).length;
-      const chars = $('#countSpaces').checked ? sel.length : sel.replace(/\s/g,'').length;
+      const t = I18N[lang]||I18N.en; const sel = getSelectionInTextarea(input); if(!sel){ selStatsBox.innerHTML=''; return; }
+      const words = splitWords(sel, $('#smartWords').checked).length; const chars = $('#countSpaces').checked ? sel.length : sel.replace(/\s/g,'').length;
       selStatsBox.innerHTML = [
-        `<div class="stat"><div class="label">${t.selHeader || 'Selection'}</div><div class="value">—</div></div>`,
-        `<div class="stat"><div class="label">${t.selWords || 'Selected words'}</div><div class="value">${words}</div></div>`,
-        `<div class="stat"><div class="label">${t.selChars || 'Selected characters'}</div><div class="value">${chars}</div></div>`
+        `<div class="stat"><div class="label">${t.selHeader}</div><div class="value">—</div></div>`,
+        `<div class="stat"><div class="label">${t.selWords}</div><div class="value">${words}</div></div>`,
+        `<div class="stat"><div class="label">${t.selChars}</div><div class="value">${chars}</div></div>`
       ].join('');
     }
 
-    function decodeEntities(s){ const ta = document.createElement('textarea'); ta.innerHTML = s; return ta.value; }
-    function stripEmoji(s){ return s.replace(/[\u{1F300}-\u{1FAFF}\u{1F1E6}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, ''); }
-    function clearFormatting(text){ const noTags = text.replace(/<[^>]*>/g,' '); const decoded = decodeEntities(noTags).replace(/\u00A0/g,' '); return stripEmoji(decoded); }
+    function decodeEntities(s){ const ta=document.createElement('textarea'); ta.innerHTML=s; return ta.value; }
+    function stripEmoji(s){ return s.replace(/[\u{1F300}-\u{1FAFF}\u{1F1E6}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu,''); }
+    function clearFormatting(text){ const noTags=text.replace(/<[^>]*>/g,' '); const decoded=decodeEntities(noTags).replace(/\u00A0/g,' '); return stripEmoji(decoded); }
 
-    function update(){ const lang = $('#lang').value; renderStats(count(input.value), lang); renderSelectionStats(lang); }
+    function update(){ const lang=$('#lang').value; const s=count(input.value); renderStats(s, lang); renderSelectionStats(lang); }
 
-    // Theme toggle (default light)
+    // Theme toggle
     const THEME_KEY='wc_theme';
     function applyTheme(theme){ document.documentElement.setAttribute('data-theme', theme); const isDark = theme==='dark'; $('#themeIcon').textContent = isDark ? '🌙' : '🌞'; $('#themeText').textContent = isDark ? 'Dark' : 'Light'; }
-    const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
-    applyTheme(savedTheme);
-    document.getElementById('themeBtn').addEventListener('click', ()=>{ const next = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark'; localStorage.setItem(THEME_KEY, next); applyTheme(next); });
+    applyTheme(localStorage.getItem(THEME_KEY) || 'light');
+    $('#themeBtn').addEventListener('click', ()=>{ const next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'; localStorage.setItem(THEME_KEY,next); applyTheme(next); });
 
     // Actions
-    document.getElementById('btnPaste').addEventListener('click', async ()=>{ try{ input.value = (await navigator.clipboard.readText()) || input.value; update(); input.focus(); } catch(e){ alert('Clipboard access denied. Use Ctrl/⌘+V.'); } });
-    document.getElementById('btnClear').addEventListener('click', ()=>{ input.value=''; update(); input.focus(); });
-    document.getElementById('btnCleanFmt').addEventListener('click', ()=>{ input.value = clearFormatting(input.value); update(); });
-    document.getElementById('btnCopy').addEventListener('click', ()=>{ navigator.clipboard.writeText(input.value); });
-    document.getElementById('btnDownload').addEventListener('click', ()=>{ const blob = new Blob([input.value], {type:'text/plain;charset=utf-8'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'text.txt'; a.click(); URL.revokeObjectURL(a.href); });
-    document.getElementById('file').addEventListener('change', async (e)=>{ const f = e.target.files[0]; if(!f) return; const text = await f.text(); input.value = text; update(); });
+    $('#btnPaste').addEventListener('click', async ()=>{ try{ input.value=(await navigator.clipboard.readText())||input.value; update(); input.focus(); }catch(e){ alert('Clipboard access denied. Use Ctrl/⌘+V.'); }});
+    $('#btnClear').addEventListener('click', ()=>{ input.value=''; update(); input.focus(); });
+    $('#btnCleanFmt').addEventListener('click', ()=>{ input.value=clearFormatting(input.value); update(); });
+    $('#btnCopy').addEventListener('click', ()=>{ navigator.clipboard.writeText(input.value); });
+    $('#btnDownload').addEventListener('click', ()=>{ const blob=new Blob([input.value],{type:'text/plain;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='text.txt'; a.click(); URL.revokeObjectURL(a.href); });
+    $('#file').addEventListener('change', async (e)=>{ const f=e.target.files[0]; if(!f) return; const text=await f.text(); input.value=text; update(); });
 
     input.addEventListener('input', update);
     input.addEventListener('select', update);
@@ -456,31 +370,28 @@
     input.addEventListener('mouseup', update);
     $$('#countSpaces, #smartWords, #trimLines').forEach(el=> el.addEventListener('change', update));
 
+    // Language init
     const savedLang = localStorage.getItem('wc_lang') || (navigator.language.startsWith('uk') ? 'uk' : 'en');
-    document.getElementById('lang').value = savedLang;
+    $('#lang').value = savedLang;
     applyI18n(savedLang);
-    document.getElementById('lang').addEventListener('change', ()=>{ const lang = document.getElementById('lang').value; localStorage.setItem('wc_lang', lang); applyI18n(lang); update(); });
+    $('#lang').addEventListener('change', ()=>{ const lang=$('#lang').value; localStorage.setItem('wc_lang',lang); applyI18n(lang); update(); });
 
+    // GA (guarded)
     if(/^G-[A-Z0-9]+$/.test(GA_ID)){
-      const s = document.createElement('script'); s.async = true; s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`; document.head.appendChild(s);
-      window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} window.gtag = gtag; gtag('js', new Date()); gtag('config', GA_ID);
+      const s=document.createElement('script'); s.async=true; s.src=`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`; document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} window.gtag=gtag; gtag('js', new Date()); gtag('config', GA_ID);
     }
 
-    function mountAds(){ if(!/^ca-pub-/.test(ADSENSE_CLIENT)) return; const s = document.createElement('script'); s.async = true; s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`; s.crossOrigin='anonymous'; document.head.appendChild(s); const slots = document.querySelectorAll('.ad-slot'); slots.forEach((slot, i)=>{ const id = i===0 ? ADSENSE_SLOT_TOP : ADSENSE_SLOT_SIDE; slot.innerHTML = `<ins class=\"adsbygoogle\" style=\"display:block\" data-ad-client=\"${ADSENSE_CLIENT}\" data-ad-slot=\"${id}\" data-ad-format=\"auto\" data-full-width-responsive=\"true\"></ins>`; }); (window.adsbygoogle = window.adsbygoogle || []).push({}); }
+    // AdSense placeholder init (guarded)
+    function mountAds(){ if(!/^ca-pub-/.test(ADSENSE_CLIENT)) return; const s=document.createElement('script'); s.async=true; s.src=`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`; s.crossOrigin='anonymous'; document.head.appendChild(s); const slots=document.querySelectorAll('.ad-slot'); slots.forEach((slot,i)=>{ const id=i===0?ADSENSE_SLOT_TOP:ADSENSE_SLOT_SIDE; slot.innerHTML=`<ins class=\"adsbygoogle\" style=\"display:block\" data-ad-client=\"${ADSENSE_CLIENT}\" data-ad-slot=\"${id}\" data-ad-format=\"auto\" data-full-width-responsive=\"true\"></ins>`; }); (window.adsbygoogle=window.adsbygoogle||[]).push({}); }
     mountAds();
 
-    function createManifest(){ const manifest = { name: 'Word & Character Counter', short_name: 'WC Counter', description: 'Live word & character counter that runs offline.', start_url: './', scope: './', display: 'standalone', background_color: '#ffffff', theme_color: '#5a48ff', icons: [ { src: makeIconDataURL(192), sizes: '192x192', type: 'image/png', purpose:'any' }, { src: makeIconDataURL(512), sizes: '512x512', type: 'image/png', purpose:'any maskable' } ] }; const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'}); const url = URL.createObjectURL(blob); document.getElementById('pwa-manifest').href = url; }
+    // PWA
+    function createManifest(){ const manifest={ name:'Word & Character Counter', short_name:'WC Counter', description:'Live word & character counter that runs offline.', start_url:'./', scope:'./', display:'standalone', background_color:'#ffffff', theme_color:'#5a48ff', icons:[ {src:makeIconDataURL(192), sizes:'192x192', type:'image/png', purpose:'any'}, {src:makeIconDataURL(512), sizes:'512x512', type:'image/png', purpose:'any maskable'} ]}; const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'}); const url=URL.createObjectURL(blob); $('#pwa-manifest').href=url; }
+    function makeIconDataURL(size){ const c=document.createElement('canvas'); c.width=c.height=size; const ctx=c.getContext('2d'); const g=ctx.createLinearGradient(0,0,size,size); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#cfd7ff'); ctx.fillStyle=g; ctx.fillRect(0,0,size,size); ctx.fillStyle='#101a2e'; ctx.font=`${Math.floor(size*0.36)}px Arial Black`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('WC', size/2, size/2+size*0.05); return c.toDataURL('image/png'); }
+    function registerSW(){ if(!('serviceWorker' in navigator)) return; const swCode=`const CACHE='wc-counter-v1'; const ASSETS=['./']; self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))}); self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim())}); self.addEventListener('fetch',e=>{const u=new URL(e.request.url); if(u.origin===location.origin){ e.respondWith(fetch(e.request).then(r=>{const rc=r.clone(); caches.open(CACHE).then(c=>c.put(e.request,rc)); return r}).catch(()=>caches.match(e.request).then(r=> r || caches.match('./')))) }})`; const blob=new Blob([swCode],{type:'text/javascript'}); const url=URL.createObjectURL(blob); navigator.serviceWorker.register(url,{scope:'./'}).catch(()=>{}); }
 
-    function makeIconDataURL(size){ const c = document.createElement('canvas'); c.width=c.height=size; const ctx=c.getContext('2d'); const g = ctx.createLinearGradient(0,0,size,size); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#cfd7ff'); ctx.fillStyle=g; ctx.fillRect(0,0,size,size); ctx.fillStyle='#101a2e'; ctx.font = `${Math.floor(size*0.36)}px Arial Black`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('WC', size/2, size/2+size*0.05); return c.toDataURL('image/png'); }
-
-    function registerSW(){ if(!('serviceWorker' in navigator)) return; const swCode = `const CACHE='wc-counter-v1'; const ASSETS=['./']; self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))}); self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim())}); self.addEventListener('fetch',e=>{const u=new URL(e.request.url); if(u.origin===location.origin){ e.respondWith(fetch(e.request).then(r=>{const rc=r.clone(); caches.open(CACHE).then(c=>c.put(e.request,rc)); return r}).catch(()=>caches.match(e.request).then(r=> r || caches.match('./')))) }})`;
-      const blob = new Blob([swCode], {type:'text/javascript'}); const url = URL.createObjectURL(blob); navigator.serviceWorker.register(url, {scope:'./'}).catch(()=>{}); }
-
-    createManifest();
-    registerSW();
-    update();
+    createManifest(); registerSW(); update();
   </script>
-
-  
 </body>
 </html>
